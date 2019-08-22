@@ -1,0 +1,10 @@
+gcc -o "threads" "thread.c" -lpthread          (compilar) -> (lpthread é a biblioteca que não é padrão então tem que colocar ela)
+./"threads"(rodar)
+gedit "run.c" (abrir)
+------------------------------------------------------------------------
+
+#include <pthread.h>      (biblioteca para utilizar thread) 
+(pthread_create(&thread1, NULL, incr, NULL)  (1 parametro eh o nome da thread, atributos da thread, nome da função que vai chamar, nome da que pode ou nao usar) 
+pthread_t thread1;      (dá um nome a thread) 
+(pthread_join(thread1, NULL)            (não acaba o programa quando termina o main, espera a thread terminar) 
+ 
