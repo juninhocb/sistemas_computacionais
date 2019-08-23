@@ -1,0 +1,17 @@
+região crítica - região a onde o código tem que ser executado em uma unica instrucao
+solução -> avisar quando está entrando na região critica e saindo da regiao critica
+Sincronização por haerdware:
+instrução atomica -> teste e ja utiliza(fazem mais de uma coisa na mesma instrução)
+mecanismo de trava - mutex locks
+uma thread em espera não ocupa processamento
+join -> pega o resultado e encerra a thread (se não usar, não desaloca a memoria)
+gcc -S run.c (cria um arquivo.s que é assembly)
+gedit run.s (abre o arquivo em assembly)
+se não fizer o mutex destroy ele só vai desalocar a memoria quando o programa ser finalizado
+time + o nome da aplicação tem o tempo em segundos(aproximado)
+user -> tempo de processamento 
+real -> tempo de espera 
+deadlock -> erro de programação, voce trancou e nunca mais abriu
+sincronizar o sincrono.c com 3 mutex, primeiro a 1,2 e assim sucessivamente 
+ 
+
