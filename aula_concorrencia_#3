@@ -1,0 +1,21 @@
+mutex = fila(1 thread pode passar peo mutex a cada momento) 
+hard real time -> n pode falhar
+soft real time -> pode falhar o requisito de tempo
+/*
+sem_init(&s, 0,1);  //sem_init(sem,shared,valor)  
+0 semaforo não compartilhado entre processos 
+valor inicial do semaforo (1 = funciona como mutex) 
+>2 semaforo de contagem
+*/
+
+/* 
+problema:
+produtor x consumidor ->
+produtor tenta encher o buffer 
+e consumidor tenta esvaziar 
+área de memoria compartilhada
+condicao de corrida -> uma ou mais threads acessam a memoria sem sicronizacao
+produtor e consumidor sinalizam um ao outro 
+*/
+ 
+
