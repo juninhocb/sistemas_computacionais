@@ -1,0 +1,49 @@
+ipc -> comunica processo de maquinas ou de outras
+troca de mensagens ou mensagem passada
+
+troca de mensagem:
+exige a interferencia do kernel ( o kernel copia a mensagem e envia)
+não tem memoria compartilhada
+kernel sincroniza 
+
+memoria compartilhada(alto desempenho): 
+kernel não é envolvido
+vantagem -> comunicação mais rapida
+threads (o programador faz a sincronização) 
+
+------------------------------------------------------------------
+
+microkernel -> usado em sistemas que não pode falhar
+kernel monolítico -> passivo de falhas, memoria compartilhada, maior velocidade
+
+comunicação indireta -> exemplo streaming; envia um stream para o servidor e o servidor para o usuarios
+
+
+comunicação bloqueante: 
+se a mensagem nao chegou, espera chegar
+
+comunicação ñ bloqueante(assincrono): 
+se a mensagem ñ chegou vc continua fazendo outras coisas 
+
+placa de rede no modo promiscuo mostra todos os pacotes que estão chegando
+
+RPC -> transformar a programação transparente
+faz chamadas de função
+encapsula -> manda para o servidor -> desencapsula -> devolve
+
+http protocolo de aplicação em que o transporte é o protocolo tcp/ip
+
+
+
+socket: 
+é uma interface entre aplicação e rede
+pode ser TCP/UDP 
+TCP garantia de entrega(envia novamente até entregar)
+UDP serviço de melhor esforco, só precisa do IP e da porta
+Voip -> UDP 
+Transferencia de arquivos -> TCP 
+TCP faz um uso justo da rede(ao longo do tempo a largura de banda para cada usuario fica justa)
+TCP -> confiável
+UDP -> simples mas tem que fazer controle 
+
+endereço ip te leva a máquina e a porta para as aplicações (predio e porta)
