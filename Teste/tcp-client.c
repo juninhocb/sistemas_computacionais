@@ -9,13 +9,22 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/inet.h> 
+#include <pthread.h>
 
 void die(char *s){
     perror(s);
     exit(1);
 }
 
-char* recvBuff(int s, char *msg) {
+struct thread_data{
+    int s,n;
+    char msg[512];
+    //char recvBuff[512]; 
+    
+    
+};
+
+char* recvBuff1(int s, char *msg) {
 int pos = 0;
 while (1) {
  recv(s, &msg[pos], 1, 0);
@@ -26,21 +35,41 @@ while (1) {
 }
 return msg;
 }
+
+void * client(void* td){
+   struct thread_data *d = (struct thread_data*)td;
+   int t =  d-> n; 
+   int sk = d -> s;
+   char *message = d-> msg;
+
+   while(1){    
+
+    char *mensagem;
+    mensagem = recvBuff1(t , message);
+    printf("%s \n", mensagem);
+    fflush(stdout);
+    	}
+   return NULL;
+}
  
 
 int main(int argc, char *argv[])
 {
     struct sockaddr_in serv_addr; 
-    int s = 0, a=0; 
+    int s = 0, a=0;
+    char msg[512]; 
     char recvBuff[512];
     char sendBuff[512];
     char sendBuff1[512];
-    //char recvBuff1[512];
+    pthread_t thr;
+    msg[0] = 100;
+    strcpy(&msg[1], argv[3]);
+    struct thread_data *td;
 
 
-    if(argc != 2)
+    if(argc != 4)
     {
-        printf("\n Usage: %s <ip of server> \n",argv[0]);
+        printf("\n Usage: %s <ip of server> <port> <nickname>\n",argv[0]);
         return 1;
     } 
 
@@ -58,7 +87,7 @@ int main(int argc, char *argv[])
     memset(&serv_addr, 0, sizeof(serv_addr)); 
 
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(5000); 
+    serv_addr.sin_port = htons(atoi(argv[2])); 
 
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
     {
@@ -72,6 +101,20 @@ int main(int argc, char *argv[])
        printf("\n Error : Connect Failed \n");
        return 1;
     } 
+    
+    send(s, msg, strlen(&msg[1])+2,0); 
+    recvBuff1(s, msg);
+    
+  
+   
+    printf("%d \n", msg[0]);
+
+	
+    td = (struct thread_data *)malloc(sizeof(struct thread_data));
+    td->s = s; 
+
+    pthread_create(&thr, NULL, client, (void *)td);
+    pthread_detach(thr);
 	
 
     while (1){
@@ -80,8 +123,9 @@ int main(int argc, char *argv[])
         printf("2- Enviar mesangem privada \n");
         printf("3- Listar participantes \n");
         printf("4- Sair \n");
+	printf("Selecione a opção: \n");
         scanf("%d", &a);
-       
+       //pegar o nome das pessoas que estão no chat
         
         
         switch(a){
@@ -90,36 +134,30 @@ int main(int argc, char *argv[])
                 //zera os buffers
                 memset(sendBuff, 0, sizeof(sendBuff));
                 memset(recvBuff, 0,sizeof(recvBuff));
-                memset(sendBuff1, 0, 512); 
+                memset(sendBuff1, 0, sizeof(sendBuff1)); 
+		
         
                 //envia 101 ao servidor
-                strcpy(&sendBuff[0], "101"); 
-                send(s, sendBuff, strlen(sendBuff) , 0);
+                sendBuff1[0] = 101;
+               
+                printf("Escreva a mensagem: ");
+		scanf(" %[^\n]", &sendBuff1[1]);
                 
-                sleep(10);
-                
-                //recebe a resposta do servidor
-                recv(s, recvBuff, 512, 0);
-             
-                   
-                int t;   
-                if (strcmp(recvBuff, "105") == 0){
-                printf("Enter message:  \n");
-                scanf("%d", &t);
-                fgets(sendBuff1, sizeof(sendBuff1), stdin);
-                
-                send(s, sendBuff1, strlen(sendBuff1) , 0);
-                
-                    
-                }else {
-                    printf("marco");
-                
-                }
-                
-                fflush(stdin);
-                
+                send(s, sendBuff1, strlen(&sendBuff1[1])+2 , 0);
+
+   		recvBuff1(s, msg);
+
+   		printf("%d \n", msg[0]);
                 break;
-            
+
+	    case 2: 
+                //zera os buffers
+                memset(sendBuff, 0, sizeof(sendBuff));
+                memset(recvBuff, 0,sizeof(recvBuff));
+                memset(sendBuff1, 0, sizeof(sendBuff1)); 
+		
+                break;            
+
             case 4:
                 memset(sendBuff, 0, 512);
                 sendBuff[0] = 104;
@@ -144,7 +182,6 @@ int main(int argc, char *argv[])
         
         
         }
-    close(s);
-    return 0;
+  return 0;
     
 }
