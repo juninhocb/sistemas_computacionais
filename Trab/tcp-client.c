@@ -34,10 +34,10 @@ while (1) {
 }
 return msg;
 }
-
+/*
  void * client(void* td){
    struct thread_data *d = (struct thread_data*)td;
- //  int t =  d-> n;
+  // int t =  d-> n;
    int sk = d -> s;
    char *message = d-> msg;
 
@@ -50,7 +50,7 @@ return msg;
      }
    return NULL;
 }
- 
+ */
 
 int main(int argc, char *argv[])
 {
@@ -60,10 +60,10 @@ int main(int argc, char *argv[])
     char recvBuff[512];
     char sendBuff[512];
     char sendBuff1[512];
-   //pthread_t thr;
+    //pthread_t thr;
     msg[0] = 100;
     strcpy(&msg[1], argv[3]);
-    //struct thread_data *td;
+   // struct thread_data *td;
 
 
     if(argc != 4)
@@ -110,8 +110,8 @@ int main(int argc, char *argv[])
    // td = (struct thread_data *)malloc(sizeof(struct thread_data));
     //td->s = s;
 
-   // pthread_create(&thr, NULL, client, (void *)td);
-    //pthread_detach(thr);
+   //pthread_create(&thr, NULL, client, (void *)td);
+   //pthread_detach(thr);
 
 
     while (1){
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
                
                 printf("Escreva a mensagem: ");
                 scanf(" %[^\n]", &sendBuff1[1]);
-                strcat(sendBuff1, '\0');
+                
                
                 send(s, sendBuff1, strlen(&sendBuff1[1])+2 , 0);
 
@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
                 strcat(sendBuff1, "|");
                 printf("Message: ");
                 scanf(" %[^\n]", &sendBuff1[temp]+1);
-                strcat(sendBuff1, '\0');
+                
        	        printf("Valor do sendbuff é: %s ", &sendBuff1[0]); // TA OK
                 send(s, sendBuff1, strlen(&sendBuff1[1])+2 , 0);
                 recvBuff1(s, msg);

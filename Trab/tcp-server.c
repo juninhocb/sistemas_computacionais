@@ -9,8 +9,6 @@
 #include <sys/types.h>
 #include <pthread.h>
 
-// Var global
-char armazenaNick[512];
 
 
 void* mostrarNicks(void* arm){
@@ -42,7 +40,7 @@ return msg;
 //estrutura dos dados do cliente
 struct client_data{
     int sk;
-    char *nick;
+    char nick[512];
     struct sockaddr_in *client_addr;
     
 };
@@ -55,13 +53,28 @@ void * client_handle(void* cd){
     char sendBuff[512];
     char recvBuff[512];
     char recvBuff1[512];
-   
-   
+    char *pegaNick;
+    char msg[512]; 
+	
     //zera os buffers
     memset(sendBuff, 0, sizeof(sendBuff));
     memset(recvBuff, 0,sizeof(recvBuff));
     memset(recvBuff1, 0,sizeof(recvBuff1));
    
+   
+    // pega o nick do cliente usando a função recvBuff que será enviada pelo Cliente
+    pegaNick = recebe(client->sk, msg);  //recebe o 100 + Nick
+    printf("Cliente conectado: %s \n", &pegaNick[1]);
+    printf("  105 \n");
+    sendBuff[0] = 105;
+    sendBuff[1] = '\0';
+ 
+
+    send(client->sk, sendBuff, strlen(sendBuff)+2, 0);  
+         
+   
+   
+    
     //quando o cliente se conectar ao servidor, imprime as frases abaixo
     printf("Waiting for data...");
     fflush(stdout);
@@ -98,9 +111,9 @@ void * client_handle(void* cd){
        case 104: //listar
             memset(sendBuff, 0, sizeof(sendBuff));
             sendBuff[0] = 107;
-            strcat(sendBuff, armazenaNick );
+           // strcat(sendBuff, armazenaNick );
             strcat(sendBuff, "Sucesso");
-            strcat(sendBuff, '\0');
+            //strcat(sendBuff, '\0');
             send(client->sk, sendBuff, strlen(sendBuff)+2, 0); 
             break;
             
@@ -112,11 +125,11 @@ void * client_handle(void* cd){
             break;
     }
    
-
+     
 
             //acho que vou ter que fazer um while 1 aqui... 
-            //free(client->client_addr);
-            //free(client);
+            free(client->client_addr);
+            free(client);
 
     return NULL;
 }
@@ -127,15 +140,11 @@ int main(int argc, char *argv[])
     unsigned int addrlen;
     int s = 0;
     struct client_data *cd;
-    char msg[512];
-    char msgB[512];
-    char *pegaNick;
     pthread_t thr;
     s = socket(AF_INET, SOCK_STREAM, 0);
     memset(&serv_addr, 0, sizeof(serv_addr));
 
-    memset(msgB, 0, sizeof(msgB));
-    memset(armazenaNick, 0,sizeof(armazenaNick));
+
     
 
  
@@ -157,22 +166,11 @@ int main(int argc, char *argv[])
 
     //cliente conecta ao servidor
     cd->sk = accept(s, (struct sockaddr*)cd->client_addr, (socklen_t*)&addrlen);
-   
+     
+    //criar um if aqui para verificar se já existe um usuario com esse nick 
     //condicional para verificar se o cliente se conectou ao servidor
     if (cd->sk > 0) {
-        // pega o nick do cliente usando a função recvBuff que será enviada pelo Cliente
-        pegaNick = recebe(cd->sk, msg);  //recebe o 100 + Nick
-        //criar um if aqui para verificar se já existe um usuario com esse nick 
-        printf("Cliente conectado: %s \n", &pegaNick[1]);
-        printf("  105 \n");
-        msgB[0] = 105;
-        msgB[1] = '\0';
-        strcat(armazenaNick, &pegaNick[1]);
-        strcat(armazenaNick, "|");
-        mostrarNicks(&armazenaNick); //Mostra os participantes do Chat
-        cd->nick = *(char*)pegaNick; //?
-        send(cd->sk, msgB, strlen(msgB)+2, 0);  
-        
+   
     }
    
     
@@ -182,3 +180,5 @@ int main(int argc, char *argv[])
 
      }
 }
+
+
