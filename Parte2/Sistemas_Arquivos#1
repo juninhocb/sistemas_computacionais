@@ -1,0 +1,46 @@
+# aula gerenciamento de memoria 
+
+primeiro byte de um arquivo é o endereço 0 do arquivo (posição 0) como se fosse um array
+arquivo armazenado no disco 
+arquivo é consumivel 
+fread() -> muda o ponteiro pro proximo byte(depois da posicao 0)
+fseek() -> faz com que o ponteiro caminhe para qualquer posição do arquivo
+endereço logico contiguo => endereço do usuario (abstração)
+
+
+arquivo binário -> estrutura mais complexa
+arquivo texto -> contém apenas caractere da tabela ascii / dividido em linhas \n (enter)
+/r/n -> trás de volta para o inicio da linha = /r e /n quebra a linha
+SO não diferencia os arquivos de texto dos binarios  
+metadados são informações sobre a informação (ex: nome, identificador, tipo,localização, bits de proteção e etc)
+SO armazena para controle 
+
+
+Operações sobre arquivos (criar, ler, escrever.... )
+Truncamento -> cortar um pedaço do arquivo ou aumentar um pedaço do arquivo 
+
+ponteiro de arquivo-> ponteiro para a ultima localizacao de leitura/escrita por processo aberto
+contador de arquivos -> conta o numero de arquivos abertos
+
+nome.(extensão)
+windows omite a extensão
+
+estrutura do disco
+RAID -> mecanismos de hardware que protegem o disco (ex: duplica a escrita)
+Acelera as leituras.. 
+Modo raw -> uma partição sem sistema de arquivos
+minidisco -> estrutura de dados 
+volume -> sistemas de arquivos agrupados gera uma letra de unidade (ex: c:)
+memoria flash -> baseado em circuito inegrado (possui vida util) tipo uma eeprom  
+disco magnético -> disco com agulha que escreve os arquivos 
+
+
+arquitetura correta (com 2 subdiretorios)
+arvore do tipo B
+caminho absoluto -> ex: c:\windows\system\...
+caminho relativo -> ex: system/... (usa somente o sub-diretório); ex: cd ..
+
+montagem de sistemas de arquivos
+
+
+
