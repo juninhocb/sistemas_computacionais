@@ -1,0 +1,57 @@
+Aula 3 - MEMORIA 
+
+---- gerenciamento de memoria ---- 
+
+SO acesso ao disco indireto 
+acesso direto a memoria principal
+nem todo programa precisa estar na memoria principal para ser executado
+
+atribuições de memoria
+em tempo de compilação(mais usado em microcontroladores) -> gera um posicao inicial de referencia para memoria (+500, ex: org 100h do assembly) 
+em tempo de carga(precisa do sistema operacional) -> gera uma posição quando abre o processo(dá dinamização)
+em tempo de execução -> biblioteca dinamicas (plugin)
+
+SO é dinamico
+Atribuição de processos -> tempo de carga (pois há muita coisa sendo carregada e descarregada)
+problema: um processo estourar o buffer e escrever e ler outros em locais de memorias de outro processos (tela azul)
+mecanismo para impedir um processo de acesso a memoria com suporte do hardware -> uso de 2 registradores (onde começa e o tamanho do processo)
+
+hardware: 
+o processo se enxerga como unico na memoria
+
+memoria ram = grande vetor de bytes (não há divisão)
+
+endereço logico(programador e core do CPU vê): passa para uma tradução (MMU - modulo de gerencia de memoria) converte o lógico para físico (uso do SO)
+é uma tabela de mapeamento, gerenciada pelo sistema operacional
+endereço fisico: endereço na memoria de fato 
+existe uma área de memoria reservada para perifericos -> não passa pela cache 
+mapeamento fixo -> já sabe para a onde vai acessar a memoria (não utiliza MMU)    
+utilizada pelo kernel  (com cache e sem cache)
+
+relocação dinamica usando registrador de relocação
+usa um somador (ex: um processo tem o limite 500, então ele coloca no somador 500, o proximo processo vai usar seu limite + 500)
+cpu -> endereço logico-> registrador de realocação -> endereço fisico -> memoria
+problema de lacuna -> fragmentação de memoria (desperdício de memoria) 
+
+troca de processos (Swapping)
+
+torna o uso da memoria ram melhor -> expande a memoria ram 
+utiliza o disco rápido para jogar lá os processos que não estão sendo executados
+ocupou 60% da memoria, já começa querer levar os procesos pro disco
+problema de levar o processo todo para a memoria
+um processo no disco em swapping leva um pouco mais de tempo de processamento
+
+Alocação contígua -> problemas com fragmentos (fragmentação externa)
+
+Mecanismos de gerencia de memoria:
+Paginação:
+cria fatias de memoria fisica do mesmo tamanho (frames de 4k ) 8k ou 16k -> super frames
+na memoria logica ou virtual:  bloquinhos chamados de paginas -> visão do processo e programador
+cada processo enxerga sua propria memoria virtual
+póde fatiar o processo em páginas
+tabela de páginas -> é um array e tem uma entrada para cada pagina -> relaciona as paginas com os frames
+criada pelo sistema operacional
+
+x86 -> segmentação e páginação
+
+
