@@ -1,0 +1,28 @@
+tempo real -> garantir que o prazo seja respeitado 
+necessita de presivibilidade -> processador mais simples
+Hard Real Time -> não pode atrasar a resposta
+Soft Real Time -> não tem problema alguma falha (ex: Multmedia)
+Algoritmos:
+RM -> A gente sabe quem vai executar (prioridade fixa) 
+A tarefa com periodo mais curto, possui maior prioridade
+implementação mais simples
+previsível
+
+EDF -> prioridade dinamica
+A tarefa mais perta de perder o DL, vai ser escalonada
+Utiliza toda CPU
+
+Ambos não podem ter dependecias de outras tarefas
+Utilizado para servicos de tempo real sem dependencia
+
+
+de quanto em quanto tempo a tarefa executa, qual o periodo que deve executar
+tamanho do periodo que a tarefa utilizar para executar
+
+escalonável -> processador e algoritmo dão conta de rodar a task
+se a tarefa ocupar uma unidade de tempo a cada 4 unidades, ela ocupa 25% do tempo do processador
+
+
+
+
+
