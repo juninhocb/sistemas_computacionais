@@ -117,7 +117,6 @@ printf(" %d\n", de->DIR_FileSize);
 void print_dir(struct directory_table *dt){
 int i;
 unsigned int dir_pos;
-struct directory_table dtl;
 
 for(i=0; i<16; i++){
 if( dt->entry[i].DIR_Name[0] != 0 &&
@@ -131,13 +130,17 @@ dt->entry[i].DIR_Name[0] = 0xE5;
 if( (dt->entry[i].Attrib & 0x8) || (dt->entry[i].Attrib & 0x4)){
 continue;
 }
-	print_dir_entry_name(&dt->entry[i]);
-	if (dt->entry[i].Attrib & 0x10) { //se for diretório
-		dir_pos = dt->entry[i].DIR_FstClusHI<<16 | dt->entry[i].DIR_FstClusLO;	
-            	dir_pos =  (FAT32_vol.BPB_RsvdSecCnt + (FAT32_vol.BPB_NumFATs * FAT32_vol.BPB_FATSz32) + (dir_pos - 2)) * FAT32_vol.BPB_BytsPerSec;
-            	read_data(dev, dir_pos, &dtl, 512);
+			print_dir_entry_name(&dt->entry[i]);
+			if (dt->entry[i].Attrib & 0x10) { //se for diretório
+			dir_pos = dt->entry[i].DIR_FstClusHI<<16 | dt->entry[i].DIR_FstClusLO;
+            //	printf("\n \n VALOR DO CLUSTER: %ld \n \n", sizeof(dir_pos));
+            unsigned int cluster = dt->entry[i].DIR_FstClusHI<<16 | dt->entry[i].DIR_FstClusLO; 
+           
+			
+            dir_pos =  (FAT32_vol.BPB_RsvdSecCnt + (FAT32_vol.BPB_NumFATs * FAT32_vol.BPB_FATSz32) + (cluster - 2)) * FAT32_vol.BPB_BytsPerSec;
+            read_data(dev, dir_pos, &dt, 512);
 	
-            	print_dir(&dtl); //chama recursivamente
+            print_dir(&dt); //chama recursivamente
 			
 
             }}
